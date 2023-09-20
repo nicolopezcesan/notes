@@ -1,0 +1,214 @@
+
+
+MONGO DB
+
+indexación
+
+
+populate
+
+middleware
+
+--------------------------
+DOCKER
+
+sudo service docker status
+sudo service docker start
+sudo ls -la /var/run/docker.sock
+sudo chown $USER:docker /var/run/docker.sock
+sudo usermod -aG docker $USER
+
+---
+
+1. dockerd (arrancar el demonio)
+2. systemctl status docker (start)
+3. systemctl stop docker (stop)
+4. systemctl enable docker (arranca de forma automatica)
+
+---
+
+docker images (muestra las imagenes de docker disponibles en nuestro local)
+docker ps --help (muestra la ayuda del comando)
+docker ps -a (muestra todos los contenedores)
+docker ps -aq (lista los ID de todos los contenedores)
+docker ps -aq --filter "since=hugo-server"
+docker ps -aq --filter "after=hugo-server"
+
+docker rm [container_id] (elimina el contenedor)
+docker rm `docker ps -aq` (elimina todos los contenedores)
+
+docker rmi [image_name] (elimina la imagen correspondiente al ID)
+docker rmi `docker images -q --filter "reference=ecosan*"` (elimina las imagenes que coincidan con las búsqueda)
+
+docker run (crea un nuevo contenedor)
+docker run -it [ubuntu] (-it >> interactive terminal)
+docker run -d [nginx]  (-d >> modo background "detach")
+docker run -it --name [container_name] [image_name] bash (creo un container, asigno nombre, desde qué image se crea, y lo ejecuto con bash)
+
+docker start [container_name] (inicia el contenedor)
+
+docker stop [container_name] (detiene el contenedor)
+docker stop `docker ps -qa --filter "name=ecosan*"` (detiene todos los contenedores que incluyan el filtro)
+
+docker pull [image:tag] (descarga la imagen "image:tag")
+docker pull [image] (descarga la imagen)
+
+docker exec [container_name] echo hola (ejecuta el codigo que le envío)
+docker exec -it [container_name] bash (nos metemos dentro del container con bash)
+
+docker top [container_name] (muestra los procesos más pesados de mi contenedor)
+docker stats [container_name] (muestra el estado (cpu, memoria, etc) de los procesos del contenedor)
+
+docker inspect [container_name] (retorna info del container)
+docker inspect [container_name] > container1.txt (pasamos la info a un archivo)
+docker inspect [image_name] > image1.txt (retorna info de la image y lo pasamos a un archivo)
+docker inspect [container_name] | grep IPAd (retorna info de ip del container)
+
+lsof -i tcp:8000 (conocer si un puerto está siendo usado)
+sudo kill -9 $(sudo lsof -t -i:8000) (matar el proceso del puerto específico)
+curl -i localhost:5000
+
+-------------------
+
+VOLUMES
+
+docker volume prune (elimina todos los volumenes que no están asociados a ningun contenedor)
+
+-------------------
+
+PORTS
+
+* -P (aleatorio)
+* -p (asignación manual)
+
+docker run -d -P nginx (crea un contenedor y le asigna un puerto aleatorio)
+docker run -d --name nginx -p 8080:80 nginx (asignamos el puerto 80 del contenedor al puerto 8080 de mi host)
+
+docker network ls (retorna info las redes de los contenedores existentes)
+docker network inspect bridge > bridge.txt (retorna info de las redes y las guarda en un archivo)
+
+docker port mongo3 (muestra en qué puerto escucha el container mongo3)
+
+docker logs [container_name] (usar para ver porque se rompe un contenedor)
+
+-------------------
+
+LINK
+
+Linkear contenedores (con alias)
+
+docker run -it --rm --name b1 mi_contenedor
+
+// crea un contenedor que linkea cont3 > cont1, y le pone alias "maquina1"
+docker run -it --rm --name cont3 --link cont1:maquina1 mongo
+
+// crea una imagen llamada ubuntu2 a partir de ubuntu1
+docker commit ubuntu1 ubuntu2
+
+// muestra el espacio que usa el contenedor
+docker run -it --rm image:v2 df -h
+
+-----------------------------------------------------------------------------------------------
+
+PHP
+
+docker run --rm -p 5000:80 --name my-app -v $PWD/src:/var/www/html php:8.0-apache
+
+docker rmi `docker images -q --filter "reference=ecosan*"`
+
+docker stop `docker ps -qa --filter "name=ecosan*"`
+
+-----------------------------------------------------------------------------------------------
+
+PHP-MY-ADMIN
+	. docker run -d -p 8080:80 --name ecosan-myadmin phpmyadmin/phpmyadmin
+
+
+MYSQL
+	. docker run -d -p 3306:3306 --name mysql-php -e MYSQL_ROOT_PASSWORD=123456 -d mysql:latest
+	. docker exec -it mysql-php bash
+	. mysql -uroot -p123456
+	. SHOW DATABASES;
+	. SHOW TABLES;
+
+-----------------------------------------------------------------------------------------------------------------
+
+MONGO DB
+
+	https://www.instagram.com/p/Ckx-witjJ5_/?igshid=MDJmNzVkMjY%3D
+
+	https://dev.to/arantespp/mongodb-shell-commands-running-on-docker-101-1l73
+
+	. docker run -p 27017:27017 --name {db_name} mongo:latest
+	. docker exec -it {container_name} bash
+	. mongo --host http://localhost --port 27017
+	. mongo || mongosh
+	. show dbs;
+	. use {my-database};
+	. db.dropDatabase();
+	. db.createCollection('posts');
+	. db.post.find();
+	. db.posts.insertMany([
+		{
+		  title: 'Hello word CSS',
+		  text: 'Fake post text',
+		},
+		{
+		  title: 'Hello word JS',
+		  text: 'Fake post text',
+		},
+		{
+		  title: 'Hello word JAVA',
+		  text: 'Fake post text',
+		}
+	]);
+
+-----------------------------------------------------------------------------------------------
+
+DOCKERIZAR MI APP
+
+// Crea una nueva imagen leyendo el Dockerfile que está en la ruta donde estoy parado
+docker build -t [new_image_name] .
+
+// Crea un container a partir de la imagen especificada
+docker run -d -p 5000:5000 --name [container_name] [image_name]
+
+docker inspect mongo | grep IPAd
+
+docker exec -it [container_name] bash
+
+curl -i localhost:5000/v1/files/list
+
+lsof -i tcp:5000
+
+-----------------------------------------------------------------------------------------------
+
+HUGO
+
+docker run --rm -it -v $PWD -u hugo jguyomard/hugo-builder hugo new site quickstart
+
+https://hub.docker.com/r/klakegg/hugo
+
+https://hub.docker.com/r/jguyomard/hugo-builder/
+
+-----------------------------------------------------------------------------------------------
+
+LOCALSTACK
+
+https://blog.futuregrade.net/seeding-a-dynamodb-local-instance-with-docker-compose/
+
+https://dynobase.dev/run-dynamodb-locally/
+
+docker exec -it localstack bash
+
+aws --endpoint-url=http://localhost:4566
+
+awslocal secretsmanager create-secret --name MY_NEW_SECRET --secret-string 77311f3ecdfc6c602098905dd724d039;
+
+awslocal secretsmanager list-secrets
+
+awslocal delete-secret --secret-id <value>
+
+aws --endpoint-url=http://localhost:4566 secretsmanager create-secret --name my_secret --secret-string [{"my_uname":"username","my_pwd":"password"}]
+
+

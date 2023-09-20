@@ -1,0 +1,100 @@
+
+LINUX
+
+https://www.puttygen.com/linux-commands
+
+. Ver si tengo archivos linkeados en X carpeta
+		=> ls -la /usr/local/lib/node_modules
+		
+		=> /home/nlopezcesan/.nvm/versions/node/v18.0.0/lib/node_modules
+	
+. Dar permisos a un user, a una carpeta específica
+		=> sudo chown -R $USER /usr/local/lib/node_modules
+	
+. Ver las dependencias instaladas globalmente o linkeadas
+	=> npm list -g
+	
+. Ver ruta global de node_modules
+	=> npm root -g
+
+. Remover npm link globalmente
+	=> npm unlink --global @npmtapi/tap-lib-gire
+	=> npm link @npmtapi/tap-lib-gire
+	=> npm unlink --global @npmtapi/tapi-lib-secretmanager
+	=> npm unlink --global @npmtapi/tapi-lib-errors
+-------------------------------------------------------------------------------------------------|
+
+--- ACTUALIZACIÓN
+. sudo add paquete
+. sudo apt-get update
+. sudo apt-get upgrade
+. apt-get install -f (instalación forzada)
+
+--- MANTENIMIENTO 
+. sudo apt-get autoremove 
+. sudo apt-get autoclean
+
+--- VIM
+ :q → sale del archivo, si no tenemos cambios sin guardar sale sin más.
+ :q! → sale del archivo descartando los cambios no guardados.
+ :w → guarda los cambios del archivo, pero no sale de Vim para seguir editando el archivo.
+ :wq → guarda los cambios y sale de Vim.
+ :x → igual que el anterior.
+
+--- PROCESOS
+top (muestra consumo de todos los procesos)
+lsof -i :port (muestra que proceso corre en el puerto especificado)
+pwd (muestra el path donde estoy posicionado)
+
+. Convertir archivos en ejecutables
+	=> chmod ug+x .husky/pre-push
+
+. Imprime detalle del proceso que usa el puerto indicado
+	=> lsof -i:5000
+
+. Imprime el PID del proceso que usa el puerto indicado
+	=> lsof -t -i:5000
+
+. Matar el proceso que ocupa el puerto indicado
+	=> sudo kill -9 `sudo lsof -t -i:9001`
+
+
+--- AGREGAR NUEVO ALIAS 
+. Agregar un nuevo alias
+	=> alias aws='docker run --rm -it amazon/aws-cli'
+
+. Remover alias
+	=> unalias [alias-name]
+
+--- EJECUTABLES
+HUSKY - HACER EJECUTABLES LOS FILES
+
+chmod ug+x .husky/*
+
+
+--- SUBIR VERSION DE UNA LIB
+  . git tag v3.1.0
+  . git push origin v3.1.0
+--------------------------------------
+
+cat /etc/passwd
+
+cat /etc/group
+
+Los dígitos se calculan sumando los valores de lectura (4), escritura (2) y ejecución (1).
+
+READ - 4
+WRITE - 2
+EXEC - 1
+- = 0
+
+Modo simbólico en chmod:
+El modo simbólico le permite modificar los permisos usando +, -y =, junto con símbolos para usuarios, grupos y otros.
+Ejemplo:chmod u+x file.txt
+Este comando agrega permiso de ejecución al propietario de file.txt.
+Se pueden combinar varios permisos, por ejemplo: chmod u+rw,go-w file.txtagrega permisos de lectura y escritura para el propietario y elimina permisos de escritura para el grupo y otros.
+
+
+
+---------------------------------------
+

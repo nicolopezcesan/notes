@@ -1,0 +1,69 @@
+
+
+\\wsl.localhost\Ubuntu\home\nicolopezcesan
+
+----------------------------------------
+
+git fetch (actualiza el estado de las ramas, pero no descarga los nuevos cambios)
+
+git stash (guarda tus cambios en una memoria temporal para poder moverte entre ramas, reservando los cambios)
+git stash apply (bajar tus cambios del stash a la rama donde estas parado)
+git stash list (ver listado de stashes hechos)
+git stash clear (elimina listado de stash)
+
+git checkout [ANOTHER_BRANCH] (cambias al branch que quieras)
+
+git branch (muestra lista de branches locales, y dónde estás parado)
+git branch -a (muestra lista de branches local & remoto)
+git branch -m [NEW_NAME] (renombrar la rama donde estás parado)
+git branch -m [OLD_NAME] [NEW_NAME] (renombrar una rama donde no estás parado)
+
+git pull (actualiza el estado de todos los branches)
+git pull origin [BRANCH_NAME] (baja cambios del repo donde estás parado - recomendado)
+
+git add . (agrega todos los archivos modificados al stage)
+git commit -m "my comment" (commitea los cambios previamente stageados)
+git push origin [MY_BRANCH] (pushea los cambios y sube la rama en caso de no existir remotamente)
+
+git reset --hard origin/master (reversa todos los cambios en el branch)
+
+git merge [FOO_BRANCH] (mergea "FOO_BRANCH" a la rama donde estoy parado)
+git merge --continue (continua con el merge, si nos detuvimos a resolver conflictos)
+git merge --abort (aborta el merge hecho previamente)
+
+git cherry-pick {commit-hash-id^} (pasar un commit específico de una rama a otra rama)
+	. https://luciano.com.ar/2020/04/git-como-hacer-merge-de-un-commit-especifico/
+
+git remote -v (muestra el repo al que apunta)
+git remote add origin https://github.com/miweb/mi-sitio.git
+
+git diff int qa -- docker-stack.yml (comparar un archivo entre dos ramas)
+
+git rebase --onto commit-id^ 917fe4d911afe9e67dc4d8c21090804fb46c8184
+
+- SUBIR VERSION DE UNA LIB
+  . Después de mergear a develop..
+  . git tag v1.0.0
+  . git push origin v1.0.0
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+VER CONFIG GLOBAL GIT
+  . git config --list --show-origin
+
+SET URL CONFIG GLOBAL
+  . git config --global url."https://{USERNAME}: {TOKEN} @gitlab.falabella.com/".insteadOf https://gitlab.falabella.com/
+
+MODIFICAR GIT CONFIG LIST
+  . nano /home/nicolopezcesan/.gitconfig
+
+
+/home/nicolas/.gitconfig
+
+EDITAR NPM CONFIG
+nano /home/nicolas/.npmrc
+gedit /home/nicolas/.npmrc
+
+
+
+
+
